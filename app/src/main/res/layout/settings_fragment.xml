@@ -6,15 +6,5 @@
     android:layout_height="match_parent"
     tools:context=".ui.SettingsFragment">
 
-    <TextView
-        android:text="04:20"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fontFamily="@font/digital"
-        android:gravity="center"
-        android:textColor="@color/colorWhite"
-        android:textSize="128sp"
-         />
-
 </FrameLayout>
 
