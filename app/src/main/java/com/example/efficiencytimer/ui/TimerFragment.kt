@@ -6,8 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.databinding.DataBindingUtil
 import com.example.efficiencytimer.R
+import com.example.efficiencytimer.databinding.TimerFragmentBinding
 
 class TimerFragment : Fragment() {
 
@@ -17,17 +18,18 @@ class TimerFragment : Fragment() {
 
     private lateinit var viewModel: TimerViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.timer_fragment, container, false)
-    }
+    private lateinit var binding: TimerFragmentBinding
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.timer_fragment, container, false)
         viewModel = ViewModelProviders.of(this).get(TimerViewModel::class.java)
-        // TODO: Use the ViewModel
+        binding.timerViewModel = viewModel
+        binding.lifecycleOwner = this
+
+        return binding.root
+        // return inflater.inflate(R.layout.timer_fragment, container, false)
     }
 
 }

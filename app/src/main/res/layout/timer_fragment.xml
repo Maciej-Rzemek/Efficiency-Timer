@@ -1,59 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    tools:context=".ui.TimerFragment"
+<layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools" >
 
-    <TextView
-        android:id="@+id/textView"
+    <data>
+        <variable
+            name="timerViewModel"
+            type="com.example.efficiencytimer.ui.TimerViewModel" />
+    </data>
+
+    <RelativeLayout
+        tools:context=".ui.TimerFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:fontFamily="@font/digital"
-        android:gravity="center"
-        android:paddingBottom="300dp"
-        android:text="04:20"
-        android:textColor="@color/colorWhite"
-        android:textSize="128sp" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/play_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="70dp"
-        android:layout_marginBottom="300dp"
-        android:gravity="center"
-        app:fabCustomSize="60dp"
-        app:srcCompat="@drawable/ic_play_arrow_black_48dp" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:fontFamily="@font/digital"
+            android:gravity="center"
+            android:paddingBottom="300dp"
+            android:text="@{timerViewModel.currentTimeString}"
+            tools:text="4:20"
+            android:textColor="@color/colorWhite"
+            android:textSize="128sp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/pause_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="300dp"
-        app:fabCustomSize="60dp"
-        app:srcCompat="@drawable/ic_pause_black_24dp" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/play_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="70dp"
+            android:layout_marginBottom="300dp"
+            android:gravity="center"
+            app:fabCustomSize="60dp"
+            app:srcCompat="@drawable/ic_play_arrow_black_48dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/stop_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="70dp"
-        android:layout_marginBottom="300dp"
-        app:fabCustomSize="60dp"
-        app:srcCompat="@drawable/ic_stop_black_24dp" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/pause_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="300dp"
+            app:fabCustomSize="60dp"
+            app:srcCompat="@drawable/ic_pause_black_24dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/stop_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="300dp"
+            app:fabCustomSize="60dp"
+            app:srcCompat="@drawable/ic_stop_black_24dp" />
 
 
-</RelativeLayout>
-
+    </RelativeLayout>
+</layout>
