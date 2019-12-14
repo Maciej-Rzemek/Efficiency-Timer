@@ -28,6 +28,7 @@ class TimerFragment : Fragment() {
         binding.timerViewModel = viewModel
         binding.lifecycleOwner = this
 
+
         return binding.root
         // return inflater.inflate(R.layout.timer_fragment, container, false)
     }

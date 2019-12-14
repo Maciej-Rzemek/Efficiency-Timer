@@ -9,6 +9,11 @@ import androidx.lifecycle.ViewModel
 
 class TimerViewModel : ViewModel() {
 
+    enum class TimerState {Stopped, Paused, Running}
+    private lateinit var timer: CountDownTimer
+    private var timerState = TimerState.Stopped
+
+
     companion object {
         // Time has ended
         const val DONE = 0L
@@ -18,8 +23,63 @@ class TimerViewModel : ViewModel() {
         const val COUNTDOWN_TIME = 60000L
     }
 
-    // Timer field
-    private val timer: CountDownTimer
+
+    private val _currentTime = MutableLiveData<Long>()
+    val currentTime: LiveData<Long>
+        get() = _currentTime
+
+    val currentTimeString = Transformations.map(currentTime) { time ->
+        DateUtils.formatElapsedTime(time)
+    }
+
+    fun countingStart() {
+        startTimer()
+        timerState = TimerState.Running
+
+    }
+
+    fun countingPaused() {
+        timer.cancel()
+        timerState = TimerState.Paused
+    }
+
+    fun countingStoped() {
+        timer.cancel()
+        _currentTime.value = DONE
+        //timerState = TimerState.Stopped
+        //onTimerFinished
+    }
+
+    private fun startTimer() {
+        timerState = TimerState.Running
+
+        timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
+            override fun onFinish() {
+                _currentTime.value = DONE
+            }
+
+            override fun onTick(millisUntilFinished: Long) {
+                _currentTime.value = (millisUntilFinished/ONE_SECOND)
+            }
+        }.start()
+    }
+
+
+
+
+
+
+
+
+
+
+}
+
+
+/*// Timer field
+
+    // Timer default state
+    private var timerState = TimerState.Stopped
 
     // The current time
     private val _currentTime = MutableLiveData<Long>()
@@ -39,8 +99,6 @@ class TimerViewModel : ViewModel() {
             override fun onTick(millisUntilFinished: Long) {
                 _currentTime.value = (millisUntilFinished/ONE_SECOND)
             }
-        }
-        timer.start()
-    }
 
-}
+        }
+    }*/
