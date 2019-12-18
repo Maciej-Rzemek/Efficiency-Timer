@@ -17,4 +17,11 @@
 <!--        <item name="android:textColorSecondary">#EEEEEE</item>-->
 <!--    </style>-->
 
+    <style name="Base.Widget.AppCompat.TextView.Counter">
+        <item name="android:fontFamily">@font/digital</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">128dp</item>
+
+    </style>
+
 </resources>
