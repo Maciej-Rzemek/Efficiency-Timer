@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_language_list">
+        <item>English</item>
+        <item>Polish</item>
+        <item>German</item>
+        <item>French</item>
+    </string-array>
+
+</resources>

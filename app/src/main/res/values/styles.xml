@@ -20,8 +20,14 @@
     <style name="Base.Widget.AppCompat.TextView.Counter">
         <item name="android:fontFamily">@font/digital</item>
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:textSize">128dp</item>
+        <item name="android:textSize">128sp</item>
 
+    </style>
+
+    <style name="Preference.Category.TimerSettings" parent="@style/Preference.Category">
+        <item name="android:textSize">70sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
 </resources>

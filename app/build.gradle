@@ -47,5 +47,9 @@ dependencies {
     // Material Design
     api 'com.google.android.material:material:1.2.0-alpha02'
 
+    // Preferences
+    implementation 'com.pavelsikun:material-seekbar-preference:2.3.0'
+    implementation "androidx.preference:preference:1.1.0"
+
 
 }

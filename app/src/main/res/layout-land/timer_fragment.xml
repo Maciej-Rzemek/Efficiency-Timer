@@ -31,20 +31,22 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/play_fab"
-            android:layout_width="135dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="200dp"
             android:layout_marginTop="68dp"
+            android:onClick="@{() -> timerViewModel.countingStart()}"
             app:layout_constraintEnd_toStartOf="@+id/pause_fab"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:srcCompat="@drawable/ic_play_arrow_black_48dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/pause_fab"
-            android:layout_width="136dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="68dp"
+            android:onClick="@{() -> timerViewModel.countingPaused()}"
             app:layout_constraintEnd_toStartOf="@+id/stop_fab"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/play_fab"
@@ -53,9 +55,11 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/stop_fab"
-            android:layout_width="136dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="68dp"
+            android:layout_marginEnd="200dp"
+            android:onClick="@{() -> timerViewModel.countingStoped()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/pause_fab"

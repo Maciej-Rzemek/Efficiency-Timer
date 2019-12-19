@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <PreferenceCategory
+        android:theme="@style/Preference.Category.TimerSettings"
+        app:iconSpaceReserved="false"
+        app:key="timer_settings_key"
+        app:title="Timer Settings">
+
+        <com.pavelsikun.seekbarpreference.SeekBarPreferenceCompat
+            android:defaultValue="25"
+            android:title="Select Working Time Length"
+            app:msbp_dialogEnabled="true"
+            app:msbp_interval="1"
+            app:msbp_maxValue="90"
+            app:msbp_measurementUnit="minutes"
+            app:msbp_minValue="1" />
+
+        <com.pavelsikun.seekbarpreference.SeekBarPreferenceCompat
+            android:defaultValue="5"
+            android:title="Select Break Time Length"
+            app:msbp_dialogEnabled="true"
+            app:msbp_interval="1"
+            app:msbp_maxValue="60"
+            app:msbp_measurementUnit="minutes"
+            app:msbp_minValue="1" />
+
+
+        <ListPreference
+
+            android:dialogTitle="Select Language"
+            android:entries="@array/settings_language_list"
+            android:key="list"
+            android:summary="Click to show a list to choose from"
+            android:title="Select Language"
+            app:iconSpaceReserved="false" />
+        <!--android:entryValues="TUTAJ PODAC Wartości(?) Języków"-->
+
+
+    </PreferenceCategory>
+</PreferenceScreen>
