@@ -2,6 +2,7 @@ package com.example.efficiencytimer.ui
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,17 @@ class TimerFragment : Fragment() {
         // return inflater.inflate(R.layout.timer_fragment, container, false)
     }
 
+
+    override fun onPause() {
+        Log.i("TAG", "TimerFragment PAUSED")
+
+        super.onPause()
+    }
+
+    override fun onResume() {
+        Log.i("TAG", "TimerFragment RESUMED")
+        super.onResume()
+    }
 
 
 }

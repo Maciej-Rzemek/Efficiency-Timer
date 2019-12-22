@@ -5,7 +5,7 @@
 
 
     <PreferenceCategory
-        android:theme="@style/Preference.Category.TimerSettings"
+        app:layout="@layout/preference_category_textview"
         app:iconSpaceReserved="false"
         app:key="timer_settings_key"
         app:title="Timer Settings">

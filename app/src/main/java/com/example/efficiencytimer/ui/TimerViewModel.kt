@@ -2,6 +2,7 @@ package com.example.efficiencytimer.ui
 
 import android.os.CountDownTimer
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -35,7 +36,6 @@ class TimerViewModel : ViewModel() {
     fun countingStart() {
         startTimer()
         timerState = TimerState.Running
-
     }
 
     fun countingPaused() {
@@ -48,6 +48,10 @@ class TimerViewModel : ViewModel() {
         _currentTime.value = DONE
         //timerState = TimerState.Stopped
         //onTimerFinished
+    }
+
+    fun countingResume() {
+        
     }
 
     private fun startTimer() {
@@ -64,15 +68,12 @@ class TimerViewModel : ViewModel() {
         }.start()
     }
 
-
-
-
-
-
-
-
-
-
+    //
+    override fun onCleared() {
+        Log.i("TAG", "ViewModel Destroyed")
+        timerState = TimerState.Paused
+        super.onCleared()
+    }
 }
 
 
