@@ -51,7 +51,7 @@ class TimerViewModel : ViewModel() {
     }
 
     fun countingResume() {
-        
+
     }
 
     private fun startTimer() {
