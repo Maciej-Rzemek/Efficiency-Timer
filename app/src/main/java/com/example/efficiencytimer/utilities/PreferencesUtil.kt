@@ -21,7 +21,7 @@ class PreferencesUtil(context: Context) {
 
         private const val BREAK_TIMER_LENGTH_ID = "break_timer_length_key"
 
-        fun getBreakTimerLength(context: Context): Int{
+        fun getBreakTimerLength(context: Context): Int {
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             return preferences.getInt(BREAK_TIMER_LENGTH_ID, 5)
         }

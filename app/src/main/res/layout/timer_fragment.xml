@@ -21,12 +21,12 @@
             style="@style/Base.Widget.AppCompat.TextView.Counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{timerViewModel.currentTimeString ?? @string/default_time}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.20" />
+        <!--android:text="@{timerViewModel.currentTimeString ?? @string/default_time}"-->
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

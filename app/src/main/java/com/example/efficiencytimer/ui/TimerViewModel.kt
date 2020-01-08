@@ -10,12 +10,13 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.efficiencytimer.utilities.PreferencesUtil
 
-class TimerViewModel(context: Context) : ViewModel() {
+class TimerViewModel(private val context: Context) : ViewModel() {
 
-    private val context = context
     enum class TimerState {Stopped, Paused, Running}
     private lateinit var timer: CountDownTimer
     private var timerState = TimerState.Stopped
+    private var timerWorkLengthSeconds = 60L
+    private var timerBreakLengthSeconds = 60L
 
 
 
@@ -69,9 +70,17 @@ class TimerViewModel(context: Context) : ViewModel() {
     }
 
     fun initTimer() {
-        val timerLength = PreferencesUtil.getWorkTimerLength(context)
+        val timerWorkLength = PreferencesUtil.getWorkTimerLength(context)
         val timerBreakLength = PreferencesUtil.getBreakTimerLength(context)
+        timerWorkLengthSeconds = (timerWorkLength.toLong() * 60L)
+        timerBreakLengthSeconds = timerBreakLength * 60L
     }
+
+    fun getCurrentTime() = _currentTime
+
+    fun getTimerWorkLengthSeconds() = timerWorkLengthSeconds
+
+
 
     override fun onCleared() {
         Log.i("TAG", "ViewModel Destroyed")

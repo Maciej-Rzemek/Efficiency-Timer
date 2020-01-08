@@ -31,12 +31,23 @@ class TimerFragment : Fragment() {
         binding.timerViewModel = viewModel
         binding.lifecycleOwner = this
 
-
-
         return binding.root
         // return inflater.inflate(R.layout.timer_fragment, container, false)
     }
 
+    private fun initUI() {
+        var time = viewModel.getTimerWorkLengthSeconds()
+        var minutes = time / 60
+        var seconds = time % 60
+
+        timer_textView.text = "$minutes:0$seconds"
+    }
+
+    override fun onStart() {
+        viewModel.initTimer()
+        initUI()
+        super.onStart()
+    }
 
     override fun onPause() {
         Log.i("TAG", "TimerFragment PAUSED")
