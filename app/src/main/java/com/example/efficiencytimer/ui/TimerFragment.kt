@@ -1,5 +1,6 @@
 package com.example.efficiencytimer.ui
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -10,12 +11,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.efficiencytimer.R
 import com.example.efficiencytimer.databinding.TimerFragmentBinding
+import com.example.efficiencytimer.utilities.PreferencesUtil
+import kotlinx.android.synthetic.main.timer_fragment.*
 
 class TimerFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = TimerFragment()
-    }
+
 
     private lateinit var viewModel: TimerViewModel
 
@@ -25,9 +26,11 @@ class TimerFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.timer_fragment, container, false)
-        viewModel = ViewModelProviders.of(this).get(TimerViewModel::class.java)
+        val viewModelFactory = TimerViewModelFactory(context!!)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(TimerViewModel::class.java)
         binding.timerViewModel = viewModel
         binding.lifecycleOwner = this
+
 
 
         return binding.root
@@ -37,7 +40,6 @@ class TimerFragment : Fragment() {
 
     override fun onPause() {
         Log.i("TAG", "TimerFragment PAUSED")
-
         super.onPause()
     }
 

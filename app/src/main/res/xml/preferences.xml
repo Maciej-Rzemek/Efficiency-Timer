@@ -11,6 +11,7 @@
         app:title="Timer Settings">
 
         <com.pavelsikun.seekbarpreference.SeekBarPreferenceCompat
+            android:key="working_timer_length_key"
             android:defaultValue="25"
             android:title="Select Working Time Length"
             app:msbp_dialogEnabled="true"
@@ -20,6 +21,7 @@
             app:msbp_minValue="1" />
 
         <com.pavelsikun.seekbarpreference.SeekBarPreferenceCompat
+            android:key="break_timer_length_key"
             android:defaultValue="5"
             android:title="Select Break Time Length"
             app:msbp_dialogEnabled="true"

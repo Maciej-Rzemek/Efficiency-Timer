@@ -1,5 +1,6 @@
 package com.example.efficiencytimer.ui
 
+import android.content.Context
 import android.os.CountDownTimer
 import android.text.format.DateUtils
 import android.util.Log
@@ -7,12 +8,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.efficiencytimer.utilities.PreferencesUtil
 
-class TimerViewModel : ViewModel() {
+class TimerViewModel(context: Context) : ViewModel() {
 
+    private val context = context
     enum class TimerState {Stopped, Paused, Running}
     private lateinit var timer: CountDownTimer
     private var timerState = TimerState.Stopped
+
 
 
     companion object {
@@ -50,10 +54,6 @@ class TimerViewModel : ViewModel() {
         //onTimerFinished
     }
 
-    fun countingResume() {
-
-    }
-
     private fun startTimer() {
         timerState = TimerState.Running
 
@@ -68,7 +68,11 @@ class TimerViewModel : ViewModel() {
         }.start()
     }
 
-    //
+    fun initTimer() {
+        val timerLength = PreferencesUtil.getWorkTimerLength(context)
+        val timerBreakLength = PreferencesUtil.getBreakTimerLength(context)
+    }
+
     override fun onCleared() {
         Log.i("TAG", "ViewModel Destroyed")
         timerState = TimerState.Paused
