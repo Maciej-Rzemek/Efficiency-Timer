@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.example.efficiencytimer.R
 import com.example.efficiencytimer.databinding.TimerFragmentBinding
 import com.example.efficiencytimer.utilities.PreferencesUtil
@@ -31,8 +32,26 @@ class TimerFragment : Fragment() {
         binding.timerViewModel = viewModel
         binding.lifecycleOwner = this
 
+
+        viewModel.getCurrentTime().observe(this, Observer {
+            if (it != null) {
+                var minutes = it / 60
+                var seconds = it % 60
+
+                if (seconds > 10) {
+                    timer_textView.text = "$minutes:$seconds"
+                } else {
+                    timer_textView.text = "$minutes:0$seconds"
+                }
+            }
+        })
+
         return binding.root
         // return inflater.inflate(R.layout.timer_fragment, container, false)
+    }
+
+    private fun setCurrentTime() {
+
     }
 
     private fun initUI() {

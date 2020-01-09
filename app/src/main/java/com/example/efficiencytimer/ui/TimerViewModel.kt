@@ -13,6 +13,7 @@ import com.example.efficiencytimer.utilities.PreferencesUtil
 class TimerViewModel(private val context: Context) : ViewModel() {
 
     enum class TimerState {Stopped, Paused, Running}
+    enum class WorkingState {Working, Resting, Stopped}
     private lateinit var timer: CountDownTimer
     private var timerState = TimerState.Stopped
     private var timerWorkLengthSeconds = 60L
@@ -25,18 +26,13 @@ class TimerViewModel(private val context: Context) : ViewModel() {
         const val DONE = 0L
         // Value of one second
         const val ONE_SECOND = 1000L
-        // This is the total time of the game
-        const val COUNTDOWN_TIME = 60000L
+
     }
 
 
     private val _currentTime = MutableLiveData<Long>()
     val currentTime: LiveData<Long>
         get() = _currentTime
-
-    val currentTimeString = Transformations.map(currentTime) { time ->
-        DateUtils.formatElapsedTime(time)
-    }
 
     fun countingStart() {
         startTimer()
@@ -55,10 +51,35 @@ class TimerViewModel(private val context: Context) : ViewModel() {
         //onTimerFinished
     }
 
-    private fun startTimer() {
-        timerState = TimerState.Running
 
-        timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
+    fun initTimer() {
+        val timerWorkLength = PreferencesUtil.getWorkTimerLength(context)
+        val timerBreakLength = PreferencesUtil.getBreakTimerLength(context)
+        timerWorkLengthSeconds = (timerWorkLength * 60L)
+        timerBreakLengthSeconds = timerBreakLength * 60L
+    }
+
+     fun startTimer() {
+        Log.i("TAG", "startTimer() has been clicked")
+        timerState = TimerState.Running
+         _currentTime.value = timerWorkLengthSeconds
+
+        var secondsLeft: Long =
+            if (_currentTime.value != null && _currentTime.value!! > 0 ) {
+                Log.i("TAG", "secondsLeft = _currentTime.value!!")
+                _currentTime.value!!
+            } else {
+                if (timerState == TimerState.Running) {
+                    Log.i("TAG", "timerBreakLengthSeconds")
+                    timerWorkLengthSeconds
+                } else {
+                Log.i("TAG", "timerBreakLengthSeconds")
+                timerBreakLengthSeconds
+                }
+            }
+
+
+        timer = object : CountDownTimer(secondsLeft * 1000, ONE_SECOND) {
             override fun onFinish() {
                 _currentTime.value = DONE
             }
@@ -67,13 +88,6 @@ class TimerViewModel(private val context: Context) : ViewModel() {
                 _currentTime.value = (millisUntilFinished/ONE_SECOND)
             }
         }.start()
-    }
-
-    fun initTimer() {
-        val timerWorkLength = PreferencesUtil.getWorkTimerLength(context)
-        val timerBreakLength = PreferencesUtil.getBreakTimerLength(context)
-        timerWorkLengthSeconds = (timerWorkLength.toLong() * 60L)
-        timerBreakLengthSeconds = timerBreakLength * 60L
     }
 
     fun getCurrentTime() = _currentTime
