@@ -43,7 +43,7 @@ class TimerViewModel(private val context: Context) : ViewModel() {
 
     fun countingStopped() {
         timerState.value = TimerState.Stopped
-        onFinishedTimerSession()
+        onSkipTimerSession()
     }
 
 
@@ -98,38 +98,29 @@ class TimerViewModel(private val context: Context) : ViewModel() {
         }.start()
     }
 
+    private fun timerHasReachedZero() {
+
+    }
+
+    private fun onSkipTimerSession() {
+        if (workState.value == WorkState.Working) {
+            workState.value = WorkState.Resting
+            _currentTime.value = timerBreakLengthSeconds
+            Log.i("TAG", "onFinishedTimerSession - was working and skipped to break - ${workState.value}")
+        } else {
+            workState.value = WorkState.Working
+            _currentTime.value = timerWorkLengthSeconds
+            Log.i("TAG", "onFinishedTimerSession - break has been skipped to work - ${workState.value}")
+        }
+        timer.cancel()
+    }
+
     fun getCurrentTime() = _currentTime
 
     fun getTimerWorkLengthSeconds() = timerWorkLengthSeconds
 
     fun getWorkState() = workState
 
-    private fun onFinishedTimerSession() {
-        initTimer()
-
-        if (workState.value == WorkState.Working && !stopSession) { // was working and break has started
-            workState.value = WorkState.Resting
-            _currentTime.value = timerBreakLengthSeconds
-            Log.i("TAG", "onFinishedTimerSession - was working and break has started - ${workState.value}")
-        } else if (workState.value == WorkState.Resting && !stopSession) { // break has ended. new work session has started
-            workState.value = WorkState.Working
-            _currentTime.value = timerWorkLengthSeconds
-            Log.i("TAG", "onFinishedTimerSession - break has ended. new work session has started - ${workState.value}")
-        } else if (workState.value == WorkState.Working) { // Pause has been pressed?
-            workState.value = WorkState.Stopped
-            _currentTime.value = timerWorkLengthSeconds
-            Log.i("TAG", "onFinishedTimerSession - Pause has been pressed? - ${workState.value}")
-        } else {
-            workState.value = WorkState.Stopped
-            _currentTime.value = timerWorkLengthSeconds
-            Log.i("TAG", "onFinishedTimerSession - else - ${workState.value}")
-        }
-
-        stopSession = false
-        timer.cancel()
-
-        Log.i("TAG", "onFinishedTimerSession - function has ended - ${workState.value}")
-    }
 
     override fun onCleared() {
         Log.i("TAG", "ViewModel Destroyed")
