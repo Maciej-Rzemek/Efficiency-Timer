@@ -55,17 +55,17 @@ class PreferencesUtil(context: Context) {
 
         private const val TIMER_STATE_ID = "timer_state_id"
 
-        fun getTimerState(context: Context) : TimerViewModel.TimerState {
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            val ordinal = preferences.getInt(TIMER_STATE_ID, 0)
-            return TimerViewModel.TimerState.values()[ordinal]
-        }
-
-        fun setTimerState(state: TimerViewModel.TimerState, context: Context) {
-            val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
-            val ordinal = state.ordinal
-            editor.putInt(TIMER_STATE_ID, ordinal)
-            editor.apply()
-        }
+//        fun getTimerState(context: Context) : TimerViewModel.TimerState {
+//            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+//            val ordinal = preferences.getInt(TIMER_STATE_ID, 0)
+//            return TimerViewModel.TimerState.values()[ordinal]
+//        }
+//
+//        fun setTimerState(state: TimerViewModel.TimerState, context: Context) {
+//            val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+//            val ordinal = state.ordinal
+//            editor.putInt(TIMER_STATE_ID, ordinal)
+//            editor.apply()
+//        }
     }
 }

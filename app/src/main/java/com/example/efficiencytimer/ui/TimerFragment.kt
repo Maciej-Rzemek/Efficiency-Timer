@@ -13,14 +13,13 @@ import androidx.lifecycle.Observer
 import com.example.efficiencytimer.R
 import com.example.efficiencytimer.databinding.TimerFragmentBinding
 import com.example.efficiencytimer.utilities.PreferencesUtil
+import com.example.efficiencytimer.utilities.WorkState
 import kotlinx.android.synthetic.main.timer_fragment.*
 
 class TimerFragment : Fragment() {
 
-
-
     private lateinit var viewModel: TimerViewModel
-
+    private lateinit var workState: WorkState
     private lateinit var binding: TimerFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +37,7 @@ class TimerFragment : Fragment() {
                 var minutes = it / 60
                 var seconds = it % 60
 
-                if (seconds > 10) {
+                if (seconds > 9) {
                     timer_textView.text = "$minutes:$seconds"
                 } else {
                     timer_textView.text = "$minutes:0$seconds"
@@ -46,8 +45,12 @@ class TimerFragment : Fragment() {
             }
         })
 
+        viewModel.getWorkState().observe(this, Observer {
+            workState = it!!
+            updateWorkStateTextView()
+        })
+
         return binding.root
-        // return inflater.inflate(R.layout.timer_fragment, container, false)
     }
 
     private fun setCurrentTime() {
@@ -60,6 +63,20 @@ class TimerFragment : Fragment() {
         var seconds = time % 60
 
         timer_textView.text = "$minutes:0$seconds"
+    }
+
+    fun updateWorkStateTextView() {
+        when (workState) {
+            WorkState.Working -> {
+                work_status_textView.text = "WORK"
+            }
+            WorkState.Resting -> {
+                work_status_textView.text = "BREAK"
+            }
+            WorkState.Stopped -> {
+                work_status_textView.text = ""
+            }
+        }
     }
 
     override fun onStart() {
