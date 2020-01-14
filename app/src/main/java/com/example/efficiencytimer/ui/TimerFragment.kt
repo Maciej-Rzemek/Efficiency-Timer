@@ -1,6 +1,6 @@
 package com.example.efficiencytimer.ui
 
-import android.content.Context
+import android.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -12,24 +12,44 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.efficiencytimer.R
 import com.example.efficiencytimer.databinding.TimerFragmentBinding
-import com.example.efficiencytimer.utilities.PreferencesUtil
+import com.example.efficiencytimer.utilities.TimerState
 import com.example.efficiencytimer.utilities.WorkState
+import kotlinx.android.synthetic.main.skipping_session_dialog.view.*
 import kotlinx.android.synthetic.main.timer_fragment.*
 
 class TimerFragment : Fragment() {
 
     private lateinit var viewModel: TimerViewModel
     private lateinit var workState: WorkState
+    private lateinit var timerState: TimerState
     private lateinit var binding: TimerFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        Log.i("ViewModelTag", "onCreateView Initialized")
 
         binding = DataBindingUtil.inflate(inflater, R.layout.timer_fragment, container, false)
         val viewModelFactory = TimerViewModelFactory(context!!)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(TimerViewModel::class.java)
         binding.timerViewModel = viewModel
         binding.lifecycleOwner = this
+
+        // Skipping Session Dialog
+        binding.stopFab.setOnClickListener {
+            val skippingSessionDialogView = LayoutInflater.from(context).inflate(R.layout.skipping_session_dialog, null)
+            val dialogBuilder = AlertDialog.Builder(context)
+                .setView(skippingSessionDialogView)
+                .setTitle(R.string.skipping_workSession_dialog)
+            val skippingSessionDialog = dialogBuilder.show()
+
+            skippingSessionDialogView.confirmSkipFAB.setOnClickListener {
+                viewModel.onSkipTimerSession()
+                skippingSessionDialog.dismiss()
+            }
+            skippingSessionDialogView.cancelSkipFAB.setOnClickListener {
+                skippingSessionDialog.dismiss()
+            }
+        }
 
 
         viewModel.getCurrentTime().observe(this, Observer {
@@ -50,11 +70,15 @@ class TimerFragment : Fragment() {
             updateWorkStateTextView()
         })
 
+        viewModel.getTimerState().observe(this, Observer {
+            timerState = it!!
+            updateButtons()
+        })
+
+        binding.playFab.isClickable = false
+
+
         return binding.root
-    }
-
-    private fun setCurrentTime() {
-
     }
 
     private fun initUI() {
@@ -65,7 +89,7 @@ class TimerFragment : Fragment() {
         timer_textView.text = "$minutes:0$seconds"
     }
 
-    fun updateWorkStateTextView() {
+    private fun updateWorkStateTextView() {
         when (workState) {
             WorkState.Working -> {
                 work_status_textView.text = "WORK"
@@ -73,25 +97,36 @@ class TimerFragment : Fragment() {
             WorkState.Resting -> {
                 work_status_textView.text = "BREAK"
             }
-            WorkState.Stopped -> {
-                work_status_textView.text = ""
+            else -> {
+                work_status_textView.text = "WORK"
             }
         }
     }
 
+    private fun updateButtons() {
+        when (timerState) {
+            TimerState.Stopped -> {
+                binding.playFab.isClickable = false
+                binding.pauseFab.isClickable = false
+            }
+        }
+    }
+
+
     override fun onStart() {
+        Log.i("FragmentTAG", "onStart Initialized")
         viewModel.initTimer()
         initUI()
         super.onStart()
     }
 
     override fun onPause() {
-        Log.i("TAG", "TimerFragment PAUSED")
+        Log.i("FragmentTAG", "TimerFragment PAUSED")
         super.onPause()
     }
 
     override fun onResume() {
-        Log.i("TAG", "TimerFragment RESUMED")
+        Log.i("FragmentTAG", "onResume Initialized")
         super.onResume()
     }
 

@@ -38,15 +38,14 @@ class TimerViewModel(private val context: Context) : ViewModel() {
 
     fun countingPaused() {
         timer.cancel()
-        timerState.value = TimerState.Paused
         Log.i("TAG", "Initialized countingPaused() - WorkState = ${workState.value} - TimerState = ${timerState.value}")
     }
 
     fun initTimer() {
         val timerWorkLength = PreferencesUtil.getWorkTimerLength(context)
         val timerBreakLength = PreferencesUtil.getBreakTimerLength(context)
-        timerWorkLengthSeconds = timerWorkLength * 60L
-        timerBreakLengthSeconds = timerBreakLength * 60L
+        timerWorkLengthSeconds = timerWorkLength * 5L
+        timerBreakLengthSeconds = timerBreakLength * 5L
     }
 
     private fun startTimer() {
@@ -93,6 +92,7 @@ class TimerViewModel(private val context: Context) : ViewModel() {
                         workState.value = WorkState.Working
                     }
                 }
+                Log.i("TAG", "onFinish - WorkState - ${workState.value}, - TimerState = ${timerState.value}")
             }
 
             override fun onTick(millisUntilFinished: Long) {
@@ -117,6 +117,8 @@ class TimerViewModel(private val context: Context) : ViewModel() {
     fun getCurrentTime() = _currentTime
 
     fun getTimerWorkLengthSeconds() = timerWorkLengthSeconds
+
+    fun getTimerState() = timerState
 
     fun getWorkState() = workState
 
