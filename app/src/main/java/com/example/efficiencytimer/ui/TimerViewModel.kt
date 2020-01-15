@@ -1,6 +1,7 @@
 package com.example.efficiencytimer.ui
 
 import android.content.Context
+import android.nfc.Tag
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -38,21 +39,24 @@ class TimerViewModel(private val context: Context) : ViewModel() {
 
     fun countingPaused() {
         timer.cancel()
+        timerState.value = TimerState.Paused
         Log.i("TAG", "Initialized countingPaused() - WorkState = ${workState.value} - TimerState = ${timerState.value}")
     }
 
     fun initTimer() {
         val timerWorkLength = PreferencesUtil.getWorkTimerLength(context)
         val timerBreakLength = PreferencesUtil.getBreakTimerLength(context)
-        timerWorkLengthSeconds = timerWorkLength * 5L
-        timerBreakLengthSeconds = timerBreakLength * 5L
+        timerWorkLengthSeconds = timerWorkLength * 60L
+        timerBreakLengthSeconds = timerBreakLength * 60L
     }
 
     private fun startTimer() {
 
         // If workState == Stopped or Null then set workState to working
-        if (workState.value == WorkState.Stopped || workState.value == null) {
+        if (workState.value == null) {
             workState.value = WorkState.Working
+        } else {
+            workState
         }
 
         var secondsLeft: Long =
@@ -97,6 +101,7 @@ class TimerViewModel(private val context: Context) : ViewModel() {
 
             override fun onTick(millisUntilFinished: Long) {
                 _currentTime.value = (millisUntilFinished/ONE_SECOND)
+                Log.i("TAG", "onTick - WorkState - ${workState.value}, - TimerState = ${timerState.value}")
             }
         }.start()
     }
@@ -105,11 +110,18 @@ class TimerViewModel(private val context: Context) : ViewModel() {
         if (workState.value == WorkState.Working) {
             workState.value = WorkState.Resting
             _currentTime.value = timerBreakLengthSeconds
-            Log.i("TAG", "onSkipTimerSession - was working and skipped to break - ${workState.value}")
-        } else {
+            if (timerState.value == TimerState.Running) {
+                timerState.value = TimerState.Paused
+            }
+            Log.i("TAG", "onSkipTimerSession - was working and skipped to break - ${workState.value} - TimerState = ${timerState.value}")
+        }
+        else {
             workState.value = WorkState.Working
             _currentTime.value = timerWorkLengthSeconds
-            Log.i("TAG", "onSkipTimerSession - break has been skipped to work - ${workState.value}")
+            if (timerState.value == TimerState.Running) {
+                timerState.value = TimerState.Paused
+            }
+            Log.i("TAG", "onSkipTimerSession - break has been skipped to work - ${workState.value} - TimerState = ${timerState.value}")
         }
         timer.cancel()
     }

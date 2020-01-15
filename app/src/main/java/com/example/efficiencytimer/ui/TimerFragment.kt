@@ -3,11 +3,13 @@ package com.example.efficiencytimer.ui
 import android.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.health.TimerStat
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.efficiencytimer.R
@@ -26,7 +28,6 @@ class TimerFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        Log.i("ViewModelTag", "onCreateView Initialized")
 
         binding = DataBindingUtil.inflate(inflater, R.layout.timer_fragment, container, false)
         val viewModelFactory = TimerViewModelFactory(context!!)
@@ -34,23 +35,21 @@ class TimerFragment : Fragment() {
         binding.timerViewModel = viewModel
         binding.lifecycleOwner = this
 
-        // Skipping Session Dialog
-        binding.stopFab.setOnClickListener {
-            val skippingSessionDialogView = LayoutInflater.from(context).inflate(R.layout.skipping_session_dialog, null)
-            val dialogBuilder = AlertDialog.Builder(context)
-                .setView(skippingSessionDialogView)
-                .setTitle(R.string.skipping_workSession_dialog)
-            val skippingSessionDialog = dialogBuilder.show()
+        skippingSessionDialog()
+        getObservers()
 
-            skippingSessionDialogView.confirmSkipFAB.setOnClickListener {
-                viewModel.onSkipTimerSession()
-                skippingSessionDialog.dismiss()
-            }
-            skippingSessionDialogView.cancelSkipFAB.setOnClickListener {
-                skippingSessionDialog.dismiss()
-            }
-        }
+        return binding.root
+    }
 
+    private fun initUI() {
+        var time = viewModel.getTimerWorkLengthSeconds()
+        var minutes = time / 60
+        var seconds = time % 60
+
+        timer_textView.text = "$minutes:0$seconds"
+    }
+
+    private fun getObservers() {
 
         viewModel.getCurrentTime().observe(this, Observer {
             if (it != null) {
@@ -74,19 +73,6 @@ class TimerFragment : Fragment() {
             timerState = it!!
             updateButtons()
         })
-
-        binding.playFab.isClickable = false
-
-
-        return binding.root
-    }
-
-    private fun initUI() {
-        var time = viewModel.getTimerWorkLengthSeconds()
-        var minutes = time / 60
-        var seconds = time % 60
-
-        timer_textView.text = "$minutes:0$seconds"
     }
 
     private fun updateWorkStateTextView() {
@@ -103,11 +89,40 @@ class TimerFragment : Fragment() {
         }
     }
 
+    private fun skippingSessionDialog() {
+        binding.stopFab.setOnClickListener {
+            val skippingSessionDialogView = LayoutInflater.from(context).inflate(R.layout.skipping_session_dialog, null)
+            val dialogBuilder = AlertDialog.Builder(context)
+                .setView(skippingSessionDialogView)
+                .setTitle(R.string.skipping_workSession_dialog)
+            val skippingSessionDialog = dialogBuilder.show()
+
+            skippingSessionDialogView.confirmSkipFAB.setOnClickListener {
+                viewModel.onSkipTimerSession()
+                skippingSessionDialog.dismiss()
+                if (timerState == TimerState.Running) {
+
+                }
+            }
+            skippingSessionDialogView.cancelSkipFAB.setOnClickListener {
+                skippingSessionDialog.dismiss()
+            }
+        }
+    }
+
     private fun updateButtons() {
         when (timerState) {
-            TimerState.Stopped -> {
-                binding.playFab.isClickable = false
-                binding.pauseFab.isClickable = false
+            TimerState.Running -> {
+                binding.playFab.visibility = View.INVISIBLE
+                binding.stopFab.visibility = View.VISIBLE
+                binding.pauseFab.visibility = View.VISIBLE
+
+            }
+            TimerState.Paused -> {
+                binding.playFab.visibility = View.VISIBLE
+                binding.stopFab.visibility = View.VISIBLE
+                binding.pauseFab.visibility = View.INVISIBLE
+
             }
         }
     }

@@ -1,3 +1,3 @@
 package com.example.efficiencytimer.utilities
 
-enum class TimerState {Stopped, Paused, Running}
+enum class TimerState {Paused, Running}
