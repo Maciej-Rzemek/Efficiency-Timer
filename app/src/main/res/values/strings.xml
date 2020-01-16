@@ -2,5 +2,7 @@
     <string name="app_name">Efficiency Timer</string>
     <string name="default_time">0:00</string>
     <string name="skipping_workSession_dialog">Are you sure to skip session?</string>
+    <string name="work_state_work">WORK</string>
+    <string name="work_state_break">BREAK</string>
 
 </resources>
